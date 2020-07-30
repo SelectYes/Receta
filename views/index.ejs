@@ -1,1 +1,16 @@
-<h1>index</h1>
+<%- include('partials/header') %>
+
+<div class="container center-align">
+    <% recipes.forEach(element => { %>
+        <div class="container">
+            <h1 class=""><%= element.recipeName %></h1>
+            <h3>Author: <%= element.author %></h3>
+            <p><%= element.created.toDateString() %></p>
+            <img src="<%= element.imageURL %>" alt="">
+            <p class="flow-text"><%= element.body %></p>
+            <a class="btn waves-effect waves-light" href="/recipes/<%= element._id %>">Read More</a>  
+        </div>
+    <% }) %>
+</div>
+
+<%- include('partials/footer') %>

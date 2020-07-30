@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+<div class="container">
+    <h1>Edit Recipe</h1>
+    <div class="row">
+        <form action="/recipes/<%= recipe._id %>?_method=PUT"" class="col s12" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input value="<%= recipe.author %>" id="author" type="text" class="validate" name="recipe[author]">
+                    <label for="author">Author Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input value="<%= recipe.recipeName %>" id="recipe" type="text" class="validate" name="recipe[recipeName]">
+                    <label for="recipe">Recipe Name</label>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea" name="recipe[body]" required></textarea>
+                    <label for="textarea1"><%= recipe.body %></label>
+                </div>
+                <div class="input-field col s6">
+                    <input value="<%= recipe.imageURL %>" id="image" type="text" class="validate" name="recipe[imageURL]">
+                    <label for="image">Image</label>
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<%- include('partials/footer') %>

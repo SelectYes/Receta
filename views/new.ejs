@@ -1,0 +1,32 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <div class="row">
+        <form action="/recipes" class="col s12" method="POST">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input placeholder="John" id="author" type="text" class="validate" name="recipe[author]">
+                    <label for="author">Author Name</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Tuna Pasta" id="recipe" type="text" class="validate" name="recipe[recipeName]">
+                    <label for="recipe">Recipe Name</label>
+                </div>
+                <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea" name="recipe[body]" required></textarea>
+                    <label for="textarea1">Recipe Goes Here...</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="Paste Image URL Here..." id="image" type="text" class="validate" name="recipe[imageURL]">
+                    <label for="image">Image</label>
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<%- include('partials/footer') %>
