@@ -13,15 +13,15 @@
                     <label for="recipe">Recipe Name</label>
                 </div>
                 <div class="input-field col s12">
-                    <textarea id="textarea1" class="materialize-textarea" name="recipe[body]" required></textarea>
-                    <label for="textarea1"><%= recipe.body %></label>
+                    <textarea id="textarea1" class="materialize-textarea" name="recipe[body]" required><%= recipe.body %></textarea>
+                    <label for="textarea1"></label>
                 </div>
                 <div class="input-field col s6">
                     <input value="<%= recipe.imageURL %>" id="image" type="text" class="validate" name="recipe[imageURL]">
                     <label for="image">Image</label>
                 </div>
             </div>
-            <button class="btn waves-effect waves-light" type="submit">Submit
+            <button class="btn grey darken-4 waves-effect waves-light" type="submit">Submit
                 <i class="material-icons right">send</i>
             </button>
         </form>
