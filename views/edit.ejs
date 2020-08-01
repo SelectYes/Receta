@@ -4,18 +4,32 @@
     <div class="row">
         <form action="/recipes/<%= recipe._id %>?_method=PUT"" class="col s12" method="POST">
             <div class="row">
+
                 <div class="input-field col s6">
                     <input value="<%= recipe.author %>" id="author" type="text" class="validate" name="recipe[author]">
                     <label for="author">Author Name</label>
                 </div>
+
                 <div class="input-field col s6">
                     <input value="<%= recipe.recipeName %>" id="recipe" type="text" class="validate" name="recipe[recipeName]">
                     <label for="recipe">Recipe Name</label>
                 </div>
+
+                <div class="input-field col s6">
+                    <input value="<%= recipe.servings %>" id="servings" type="number" class="validate" name="recipe[servings]">
+                    <label for="servings">Servings</label>
+                </div>
+
+                <div class="input-field col s6">
+                    <input value="<%= recipe.prepTime %>" id="prep-time" type="number" class="validate" name="recipe[prepTime]">
+                    <label for="prep-time">Prep Time (minutes)</label>
+                </div>
+
                 <div class="input-field col s12">
-                    <textarea id="textarea1" class="materialize-textarea" name="recipe[body]" required><%= recipe.body %></textarea>
+                    <textarea id="textarea1" class="materialize-textarea" name="recipe[description]" required><%= recipe.description %></textarea>
                     <label for="textarea1"></label>
                 </div>
+
                 <div class="input-field col s6">
                     <input value="<%= recipe.imageURL %>" id="image" type="text" class="validate" name="recipe[imageURL]">
                     <label for="image">Image</label>

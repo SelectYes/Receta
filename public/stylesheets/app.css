@@ -85,3 +85,7 @@ h1 {
 h5.white-text {
     margin: 0;
 }
+
+.column-entry {
+    text-align: left;
+}

@@ -30,9 +30,17 @@ app.use(methodOverride('_method'));
 const recipeScema = new mongoose.Schema({
     author: String,
     recipeName: String,
-    body: String,
+    description: String,
     imageURL: String,
-    created: {type: Date, default: Date.now}
+    created: {type: Date, default: Date.now},
+    servings: Number,
+    prepTime: Number,
+    ingredients: {
+        item: String,
+        quantity: Number,
+        measuringUnit: String
+    },
+    instructions: String
 });
 
 // MODEL
