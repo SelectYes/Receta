@@ -8,8 +8,8 @@
                 <h5>Author: <%= recipe.author %></h5>
                 <p><%= recipe.created.toDateString() %></p>
                 <div class="row">
-                    <div class="col s3">Servings: <%= recipe.servings %></div>
-                    <div class="col s9">Prep Time: <%= recipe.prepTime %> mins</div>
+                    <div class="col s3"><i class="show-icon material-icons">fastfood</i> <%= recipe.servings %> servings</div>
+                    <div class="col s9"><i class="show-icon material-icons">alarm</i> <%= recipe.prepTime %> mins</div>
                 </div>
                 <div class="container left section">
                     <a class="btn grey-text text-darken-4 waves-effect white waves-light" href="/recipes">Back</a>

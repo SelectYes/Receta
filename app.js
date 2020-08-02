@@ -35,11 +35,7 @@ const recipeScema = new mongoose.Schema({
     created: {type: Date, default: Date.now},
     servings: Number,
     prepTime: Number,
-    ingredients: {
-        item: String,
-        quantity: Number,
-        measuringUnit: String
-    },
+    ingredients: String,
     instructions: String
 });
 

@@ -66,6 +66,11 @@ h1 {
     object-fit: cover;
 }
 
+.show-icon {
+    position: relative;
+    top: 5px;
+}
+
 .index-image {
     width: 100%;
     max-height: 150px;
