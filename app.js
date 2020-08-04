@@ -8,6 +8,8 @@ const port = 3000;
 const mongoose = require('mongoose');
 const { response } = require('express');
 const methodOverride = require('method-override');
+const Recipe = require('./models/recipe');
+const seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost:27017/recipedex', {
     useNewUrlParser: true,
@@ -23,26 +25,6 @@ app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
 
 /////////////////////////////////////////////////////////////////////////////
-//                          MONGOOSE MODEL CONFIG
-/////////////////////////////////////////////////////////////////////////////
-
-// RECIPE SCHEMA
-const recipeScema = new mongoose.Schema({
-    author: String,
-    recipeName: String,
-    description: String,
-    imageURL: String,
-    created: {type: Date, default: Date.now},
-    servings: Number,
-    prepTime: Number,
-    ingredients: String,
-    instructions: String
-});
-
-// MODEL
-const Recipe = mongoose.model("Recipe", recipeScema);
-
-/////////////////////////////////////////////////////////////////////////////
 //                                  ROUTES
 /////////////////////////////////////////////////////////////////////////////
 
@@ -52,6 +34,8 @@ const Recipe = mongoose.model("Recipe", recipeScema);
 //     body: "A delicious tuna pasta salad. Perfect for a light lunch and guaranteed to impress your boyfriend.",
 //     imageURL: "https://www.chatelaine.com/wp-content/uploads/2012/01/Pesto-penne-with-tuna-0-l.jpg",
 // });
+
+// seedDB();
 
 // INDEX
 app.get('/', (req, res) => {
@@ -86,10 +70,11 @@ app.post('/recipes', (req, res) => {
 
 // SHOW
 app.get('/recipes/:id', (req, res) => {
-    Recipe.findById(req.params.id, (err, recipe) => {
+    Recipe.findById(req.params.id).populate('comments').exec((err, recipe) => {
         if (err) {
             console.log(err);
         } else {
+            console.log(recipe)
             res.render('show', {recipe: recipe});
         }
     });

@@ -94,3 +94,15 @@ h5.white-text {
 .column-entry {
     text-align: left;
 }
+
+#comments-banner {
+    margin-left: 20px;
+}
+
+#comment-row {
+    margin-bottom: 0;
+}
+
+.comment-container {
+    margin: 0 20px;
+}
