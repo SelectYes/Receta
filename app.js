@@ -9,6 +9,7 @@ const mongoose = require('mongoose');
 const { response } = require('express');
 const methodOverride = require('method-override');
 const Recipe = require('./models/recipe');
+const Comment = require('./models/comment');
 const seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost:27017/recipedex', {
@@ -25,7 +26,7 @@ app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
 
 /////////////////////////////////////////////////////////////////////////////
-//                                  ROUTES
+//                             RECIPE ROUTES
 /////////////////////////////////////////////////////////////////////////////
 
 // Recipe.create({
@@ -54,7 +55,7 @@ app.get('/recipes', (req, res) => {
 
 // NEW
 app.get('/recipes/new', (req, res) => {
-    res.render('new');
+    res.render('recipes/new');
 });
 
 // CREATE
@@ -74,8 +75,7 @@ app.get('/recipes/:id', (req, res) => {
         if (err) {
             console.log(err);
         } else {
-            console.log(recipe)
-            res.render('show', {recipe: recipe});
+            res.render('recipes/show', {recipe: recipe});
         }
     });
 });
@@ -86,7 +86,7 @@ app.get('/recipes/:id/edit', (req, res) => {
         if (err) {
             console.log('ERROR!');
         } else {
-            res.render('edit', {recipe: recipe});
+            res.render('recipes/edit', {recipe: recipe});
         }
     });
 });
@@ -111,6 +111,37 @@ app.delete('/recipes/:id', (req, res) => {
             res.redirect('/recipes');
         }
     });
+});
+
+
+/////////////////////////////////////////////////////////////////////////////
+//                             COMMENT ROUTES
+/////////////////////////////////////////////////////////////////////////////
+
+// NEW ROUTE
+app.get('/recipes/:id/comments/new', async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        res.render('comments/new', {recipe: recipe});
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// CREATE ROUTE
+app.post('/recipes/:id/comments', async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        const comment = await Comment.create(req.body.comment);
+
+        recipe.comments.push(comment);
+        recipe.save();
+
+        res.redirect(`/recipes/${req.params.id}`)
+
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 app.listen(port, () => console.log(`Serving RecipeDex on localhost:${port}`))

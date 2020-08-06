@@ -85,6 +85,14 @@ h1 {
 
 .new-recipes-banner div {
     align-self: center;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#add-comment-button {
+    margin: 0 20px;
 }
 
 h5.white-text {
