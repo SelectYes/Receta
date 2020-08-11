@@ -114,3 +114,7 @@ h5.white-text {
 .comment-container {
     margin: 0 20px;
 }
+
+#nav-item-wrap {
+    display: flex;
+}
