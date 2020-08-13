@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const route = express.Router();
+const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 
@@ -12,11 +12,11 @@ app.use((req, res, next) => {
 
 // SIGN UP ROUTES
 
-route.get('/register', (req, res) => {
+router.get('/register', (req, res) => {
     res.render('register');
 });
 
-route.post('/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const newUser = new User({ username: req.body.username });
         const password = req.body.password;
@@ -35,11 +35,11 @@ route.post('/register', async (req, res) => {
 
 // SIGN-IN ROUTES
 
-route.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
     res.render('login');
 });
 
-route.post('/login', passport.authenticate('local', 
+router.post('/login', passport.authenticate('local', 
     {
         successRedirect: '/recipes',
         failureRedirect: '/login'
@@ -48,9 +48,9 @@ route.post('/login', passport.authenticate('local',
 
 // SIGN OUT ROUTE
 
-route.get('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.logout();
     res.redirect('/recipes');   
 });
 
-module.exports = route;
+module.exports = router;

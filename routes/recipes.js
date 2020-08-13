@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const route = express.Router();
+const router = express.Router();
 const Recipe = require('../models/recipe');
 const recipe = require('../models/recipe');
 
@@ -17,7 +17,7 @@ const isLoggedIn = (req, res, next) => {
     res.redirect('/login');
 };
 
-route.get('/', (req, res) => {
+router.get('/', (req, res) => {
     Recipe.find({}, (err, retrievedRecipes) => {
         if (err) {
             console.log("ERROR!");
@@ -28,12 +28,12 @@ route.get('/', (req, res) => {
 });
 
 // NEW
-route.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('recipes/new');
 });
 
 // CREATE
-route.post('/', isLoggedIn, async (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.create(req.body.recipe);
 
@@ -50,7 +50,7 @@ route.post('/', isLoggedIn, async (req, res) => {
 });
 
 // SHOW
-route.get('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
     Recipe.findById(req.params.id).populate('comments').exec((err, recipe) => {
         if (err) {
             console.log(err);
@@ -61,7 +61,7 @@ route.get('/:id', (req, res) => {
 });
 
 // EDIT
-route.get('/:id/edit', isLoggedIn, (req, res) => {
+router.get('/:id/edit', isLoggedIn, (req, res) => {
     Recipe.findById(req.params.id, (err, recipe) => {
         if (err) {
             console.log('ERROR!');
@@ -72,7 +72,7 @@ route.get('/:id/edit', isLoggedIn, (req, res) => {
 });
 
 // UPDATE
-route.put('/:id', isLoggedIn, (req, res) => {
+router.put('/:id', isLoggedIn, (req, res) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
         if (err) {
             console.log('ERROR!');
@@ -83,7 +83,7 @@ route.put('/:id', isLoggedIn, (req, res) => {
 });
 
 // DESTROY
-route.delete('/:id', isLoggedIn, (req, res) => {
+router.delete('/:id', isLoggedIn, (req, res) => {
     Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
         if (err) {
             console.log("ERROR!");
@@ -93,4 +93,4 @@ route.delete('/:id', isLoggedIn, (req, res) => {
     });
 });
 
-module.exports = route;
+module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const route = express.Router({mergeParams: true});
+const router = express.Router({mergeParams: true});
 const Recipe = require('../models/recipe');
 const Comment = require('../models/comment');
 
@@ -18,7 +18,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 // NEW ROUTE
-route.get('/new', isLoggedIn, async (req, res) => {
+router.get('/new', isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
         res.render('comments/new', {recipe: recipe});
@@ -28,7 +28,7 @@ route.get('/new', isLoggedIn, async (req, res) => {
 });
 
 // CREATE ROUTE
-route.post('/', isLoggedIn, async (req, res) => {
+router.post('/', isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
         const comment = await Comment.create(req.body.comment);
@@ -47,4 +47,4 @@ route.post('/', isLoggedIn, async (req, res) => {
     }
 });
 
-module.exports = route;
+module.exports = router;
