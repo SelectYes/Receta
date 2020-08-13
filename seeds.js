@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 const Recipe = require('./models/recipe');
 const Comment = require('./models/comment');
-// const Recipe = require('./models/recipe');
+
+//     author: "Claire",
+//     recipeName: "Tuna Pesto Pasta",
+//     body: "A delicious tuna pasta salad. Perfect for a light lunch and guaranteed to impress your boyfriend.",
+//     imageURL: "https://www.chatelaine.com/wp-content/uploads/2012/01/Pesto-penne-with-tuna-0-l.jpg",
 
 const seeds = [
     {
