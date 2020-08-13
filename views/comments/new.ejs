@@ -6,11 +6,6 @@
         <form action="/recipes/<%=recipe._id%>/comments" class="col s12" method="POST">
             <div class="row">
 
-                <div class="input-field col s6">
-                    <input placeholder="John" id="author" type="text" class="validate" name="comment[author]">
-                    <label for="author">Author Name</label>
-                </div>
-
                 <div class="input-field col s12">
                     <textarea id="textarea1" class="materialize-textarea" name="comment[text]" required></textarea>
                     <label for="textarea1">Add a comment...</label>

@@ -5,7 +5,7 @@
         <div id="show-row" class="row">
             <div class="col s6">
                 <h2 class="white-text"><%= recipe.recipeName %></h2>
-                <h5>Author: <%= recipe.author %></h5>
+                <h5>Author: <%= recipe.author.username %></h5>
                 <p><%= recipe.created.toDateString() %></p>
                 <div class="row">
                     <div class="col s3"><i class="show-icon material-icons">fastfood</i> <%= recipe.servings %> servings</div>
@@ -65,7 +65,7 @@
         <% recipe.comments.forEach(comment => { %>
 
             <div class="container">
-                <p><strong><%= comment.author %></strong> - <em><%= comment.text %></em></p>
+                <p><strong><%= comment.author.username %></strong> - <em><%= comment.text %></em></p>
             </div>  
 
         <% }); %>

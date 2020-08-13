@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////
-//                                  SETUP
+//                           REQUIREMENTS SETUP
 /////////////////////////////////////////////////////////////////////////////
 
 // SERVER/DB
@@ -24,6 +24,10 @@ const port                      = 3000;
 const recipesRoute              = require('./routes/recipes');
 const commentsRoute             = require('./routes/comments');
 const authRoutes                = require('./routes/authentication');
+
+/////////////////////////////////////////////////////////////////////////////
+//                           SERVER / DB CONFIG
+/////////////////////////////////////////////////////////////////////////////
 
 mongoose.connect('mongodb://localhost:27017/recipedex', {
     useNewUrlParser: true,
@@ -56,17 +60,27 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// MAKE CURRENT USER DATA AVAILABLE IN ALL TEMPLATES/ROUTES
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
 });
 
-app.use(recipesRoute);
-app.use(commentsRoute);
+/////////////////////////////////////////////////////////////////////////////
+//                             ROUTES CONFIG
+/////////////////////////////////////////////////////////////////////////////
+
+app.use('/recipes', recipesRoute);
+app.use('/recipes/:id/comments', commentsRoute);
 app.use(authRoutes);
 
 // SEED DATABASE //
 // seedDB(); 
+
+// INDEX
+app.get('/', (req, res) => {
+    res.redirect('/recipes');
+});
 
 
 app.listen(port, () => console.log(`Serving RecipeDex on localhost:${port}`))

@@ -2,20 +2,22 @@ const express = require('express');
 const app = express();
 const route = express.Router();
 const Recipe = require('../models/recipe');
+const recipe = require('../models/recipe');
+
+// PASSING LOGGED IN USER DATA TO TEMPLATES/ROUTES
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
 
 const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
-}
+};
 
-// INDEX
 route.get('/', (req, res) => {
-    res.redirect('/recipes');
-});
-
-route.get('/recipes', (req, res) => {
     Recipe.find({}, (err, retrievedRecipes) => {
         if (err) {
             console.log("ERROR!");
@@ -26,23 +28,29 @@ route.get('/recipes', (req, res) => {
 });
 
 // NEW
-route.get('/recipes/new', isLoggedIn, (req, res) => {
+route.get('/new', isLoggedIn, (req, res) => {
     res.render('recipes/new');
 });
 
 // CREATE
-route.post('/recipes', isLoggedIn, (req, res) => {
-    Recipe.create(req.body.recipe, (err, newRecipe) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.redirect('/recipes')
-        }
-    });
+route.post('/', isLoggedIn, async (req, res) => {
+    try {
+        const recipe = await Recipe.create(req.body.recipe);
+
+        recipe.author.username = req.user.username;
+        recipe.author.id = req.user._id;
+        recipe.save();
+
+        res.redirect('/recipes')
+        
+    } catch (error) {
+        console.log(error);
+        console.log('COULD NOT CREATE NEW RECIPE!');
+    }  
 });
 
 // SHOW
-route.get('/recipes/:id', (req, res) => {
+route.get('/:id', (req, res) => {
     Recipe.findById(req.params.id).populate('comments').exec((err, recipe) => {
         if (err) {
             console.log(err);
@@ -53,7 +61,7 @@ route.get('/recipes/:id', (req, res) => {
 });
 
 // EDIT
-route.get('/recipes/:id/edit', isLoggedIn, (req, res) => {
+route.get('/:id/edit', isLoggedIn, (req, res) => {
     Recipe.findById(req.params.id, (err, recipe) => {
         if (err) {
             console.log('ERROR!');
@@ -64,7 +72,7 @@ route.get('/recipes/:id/edit', isLoggedIn, (req, res) => {
 });
 
 // UPDATE
-route.put('/recipes/:id', isLoggedIn, (req, res) => {
+route.put('/:id', isLoggedIn, (req, res) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
         if (err) {
             console.log('ERROR!');
@@ -75,7 +83,7 @@ route.put('/recipes/:id', isLoggedIn, (req, res) => {
 });
 
 // DESTROY
-route.delete('/recipes/:id', isLoggedIn, (req, res) => {
+route.delete('/:id', isLoggedIn, (req, res) => {
     Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
         if (err) {
             console.log("ERROR!");

@@ -4,6 +4,12 @@ const route = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
 
+// PASSING LOGGED IN USER DATA TO TEMPLATES/ROUTES
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 // SIGN UP ROUTES
 
 route.get('/register', (req, res) => {
