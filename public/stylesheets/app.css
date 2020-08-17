@@ -118,3 +118,11 @@ h5.white-text {
 #nav-item-wrap {
     display: flex;
 }
+
+#index-header-container {
+    margin-top: 20px;
+}
+
+#index-header {
+    margin-left: 30px;
+}

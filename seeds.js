@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Recipe = require('./models/recipe');
 const Comment = require('./models/comment');
+const User = require('./models/user');
 
 //     author: "Claire",
 //     recipeName: "Tuna Pesto Pasta",
@@ -53,14 +54,15 @@ const seedDB = async () => {
     try{
         await Recipe.deleteMany({}, () => console.log('RECIPES DELETED'))
         await Comment.deleteMany({}, () => console.log('COMMENTS DELETED'))
+        await User.deleteMany({}, () => console.log('USERS DELETED'))
         
-        seeds.forEach(async seed => {
-            const recipe = await Recipe.create(seed);
-            const comment = await Comment.create(genericComment);
+        // seeds.forEach(async seed => {
+        //     const recipe = await Recipe.create(seed);
+        //     const comment = await Comment.create(genericComment);
     
-            recipe.comments.push(comment);
-            recipe.save();
-        });
+        //     recipe.comments.push(comment);
+        //     recipe.save();
+        // });
 
 
     } catch(error){

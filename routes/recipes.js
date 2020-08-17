@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
+// const mongoose = require('mongoose');
 const Recipe = require('../models/recipe');
-const recipe = require('../models/recipe');
+
 
 // PASSING LOGGED IN USER DATA TO TEMPLATES/ROUTES
 app.use((req, res, next) => {
@@ -10,12 +11,34 @@ app.use((req, res, next) => {
     next();
 });
 
+// MIDDLEWARE CHEKCKING IF USER IS LOGGED IN
 const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
 };
+
+//MIDDLEWARE CHECKING IF USER IS AUTHORIZED FOR ACTION
+const isUserAuthenicated = async (req, res, next) => {
+    try {
+        if (req.isAuthenticated()) {
+            const recipe = await Recipe.findById(req.params.id);
+            if (recipe.author.id.equals(req.user._id)) {
+                next();
+            } else {
+                console.log('You are not permitted to do that.');
+                res.redirect("back");
+            }
+        } else {
+            console.log('You must be logged in to do that.');
+            res.redirect("back");
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('back');
+    }
+}
 
 router.get('/', (req, res) => {
     Recipe.find({}, (err, retrievedRecipes) => {
@@ -61,7 +84,7 @@ router.get('/:id', (req, res) => {
 });
 
 // EDIT
-router.get('/:id/edit', isLoggedIn, (req, res) => {
+router.get('/:id/edit', isUserAuthenicated, (req, res) => {
     Recipe.findById(req.params.id, (err, recipe) => {
         if (err) {
             console.log('ERROR!');
@@ -72,7 +95,7 @@ router.get('/:id/edit', isLoggedIn, (req, res) => {
 });
 
 // UPDATE
-router.put('/:id', isLoggedIn, (req, res) => {
+router.put('/:id', isUserAuthenicated, (req, res) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
         if (err) {
             console.log('ERROR!');
@@ -83,7 +106,7 @@ router.put('/:id', isLoggedIn, (req, res) => {
 });
 
 // DESTROY
-router.delete('/:id', isLoggedIn, (req, res) => {
+router.delete('/:id', isUserAuthenicated, (req, res) => {
     Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
         if (err) {
             console.log("ERROR!");
