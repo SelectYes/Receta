@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const router = express.Router();
-// const mongoose = require('mongoose');
 const Recipe = require('../models/recipe');
 
 
@@ -20,7 +19,7 @@ const isLoggedIn = (req, res, next) => {
 };
 
 //MIDDLEWARE CHECKING IF USER IS AUTHORIZED FOR ACTION
-const isUserAuthenicated = async (req, res, next) => {
+const checkRecipeOwnership = async (req, res, next) => {
     try {
         if (req.isAuthenticated()) {
             const recipe = await Recipe.findById(req.params.id);
@@ -84,7 +83,7 @@ router.get('/:id', (req, res) => {
 });
 
 // EDIT
-router.get('/:id/edit', isUserAuthenicated, (req, res) => {
+router.get('/:id/edit', checkRecipeOwnership, (req, res) => {
     Recipe.findById(req.params.id, (err, recipe) => {
         if (err) {
             console.log('ERROR!');
@@ -95,7 +94,7 @@ router.get('/:id/edit', isUserAuthenicated, (req, res) => {
 });
 
 // UPDATE
-router.put('/:id', isUserAuthenicated, (req, res) => {
+router.put('/:id', checkRecipeOwnership, (req, res) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
         if (err) {
             console.log('ERROR!');
@@ -106,7 +105,7 @@ router.put('/:id', isUserAuthenicated, (req, res) => {
 });
 
 // DESTROY
-router.delete('/:id', isUserAuthenicated, (req, res) => {
+router.delete('/:id', checkRecipeOwnership, (req, res) => {
     Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
         if (err) {
             console.log("ERROR!");

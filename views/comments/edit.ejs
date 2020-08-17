@@ -1,0 +1,23 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <h1>Edit Comment</h1>
+    <div class="row grey lighten-4 z-depth-0 section">
+        <form action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=PUT" class="col s12" method="POST">
+            <div class="row">
+
+                <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea" name="comment[text]" required><%= comment.text %></textarea>
+                    <label for="textarea1">Edit comment</label>
+                </div>
+
+            </div>
+            <button class="btn z-depth-0 grey darken-4 waves-effect waves-light" type="submit">Save
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>

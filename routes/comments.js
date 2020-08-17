@@ -10,12 +10,34 @@ app.use((req, res, next) => {
     next();
 });
 
+// MIDDLEWARE CHEKCKING IF USER IS LOGGED IN
 const isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login');
 };
+
+//MIDDLEWARE CHECKING IF USER IS AUTHORIZED FOR ACTION
+const checkCommentOwnership = async (req, res, next) => {
+    try {
+        if (req.isAuthenticated()) {
+            const comment = await Comment.findById(req.params.comment_id);
+            if (comment.author.id.equals(req.user._id)) {
+                next();
+            } else {
+                console.log('You are not permitted to do that.');
+                res.redirect("back");
+            }
+        } else {
+            console.log('You must be logged in to do that.');
+            res.redirect("back");
+        }
+    } catch (error) {
+        console.log(error);
+        res.redirect('back');
+    }
+}
 
 // NEW ROUTE
 router.get('/new', isLoggedIn, async (req, res) => {
@@ -42,6 +64,41 @@ router.post('/', isLoggedIn, async (req, res) => {
 
         res.redirect(`/recipes/${req.params.id}`)
 
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// EDIT ROUTE
+router.get('/:comment_id/edit', checkCommentOwnership, async (req, res) => {
+    try {
+        const comment = await Comment.findById(req.params.comment_id);
+        const recipe = await Recipe.findById(req.params.id);
+    
+        res.render('comments/edit', {comment: comment, recipe: recipe});
+        
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// UPDATE ROUTE
+router.put('/:comment_id', checkCommentOwnership, async (req, res) => {
+    try {
+        await Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment);
+        res.redirect(`/recipes/${req.params.id}`);
+        
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// DESTROY ROUTE
+router.delete('/:comment_id', checkCommentOwnership, async (req, res) => {
+    try {
+        await Comment.findByIdAndDelete(req.params.comment_id);
+        res.redirect(`/recipes/${req.params.id}`);
+        
     } catch (error) {
         console.log(error);
     }

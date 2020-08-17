@@ -60,12 +60,16 @@
     
 </div>
 
-<div id="section-2" class="container center-align grey lighten-4 section">
+<div id="section-2" class="container">
     <div id="comment-row" class="row">
         <% recipe.comments.forEach(comment => { %>
 
-            <div class="container">
+            <div id="comment-block" class="grey lighten-4 section">
                 <p><strong><%= comment.author.username %></strong> - <em><%= comment.text %></em></p>
+                <a class="btn white-text waves-effect black waves-dark z-depth-0 btn-small" href="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                <form id="inline-form" action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                    <button type="submit" class="btn white-text waves-effect black waves-dark z-depth-0 btn-small">Delete</button>
+                </form>
             </div>  
 
         <% }); %>
