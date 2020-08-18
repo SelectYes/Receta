@@ -12,11 +12,19 @@
                     <div class="col s9"><i class="show-icon material-icons">alarm</i> <%= recipe.prepTime %> mins</div>
                 </div>
                 <div class="container left section">
+                    
                     <a class="btn grey-text text-darken-4 waves-effect white waves-light" href="/recipes">Back</a>
-                    <a class="btn grey-text text-darken-4 waves-effect white waves-light" href="/recipes/<%= recipe._id %>/edit">Edit</a>
-                    <form id="inline-form" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
-                        <button type="submit" class="btn grey-text text-darken-4 waves-effect white waves-light">Delete</button>
-                    </form>
+                    <% if (currentUser && recipe.author.id.equals(currentUser._id)) { %>
+                        <a class="btn grey-text text-darken-4 waves-effect white waves-light" href="/recipes/<%= recipe._id %>/edit">Edit</a>
+                        <form id="inline-form" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn grey-text text-darken-4 waves-effect white waves-light">Delete</button>
+                        </form>
+                    <% } else { %> 
+                        <a class="btn grey-text text-darken-4 waves-effect white waves-light disabled" href="/recipes/<%= recipe._id %>/edit">Edit</a>
+                        <form id="inline-form" action="/recipes/<%= recipe._id %>?_method=DELETE" method="POST">
+                            <button type="submit" class="btn grey-text text-darken-4 waves-effect white waves-light disabled">Delete</button>
+                        </form>
+                    <% } %> 
                 </div>
             </div>
 
@@ -66,10 +74,17 @@
 
             <div id="comment-block" class="grey lighten-4 section">
                 <p><strong><%= comment.author.username %></strong> - <em><%= comment.text %></em></p>
-                <a class="btn white-text waves-effect black waves-dark z-depth-0 btn-small" href="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit">Edit</a>
-                <form id="inline-form" action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
-                    <button type="submit" class="btn white-text waves-effect black waves-dark z-depth-0 btn-small">Delete</button>
-                </form>
+                <% if (currentUser && comment.author.id.equals(currentUser._id)) { %> 
+                    <a class="btn white-text waves-effect black waves-dark z-depth-0 btn-small" href="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                    <form id="inline-form" action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn white-text waves-effect black waves-dark z-depth-0 btn-small">Delete</button>
+                    </form>
+                <% } else { %>
+                    <a class="btn white-text waves-effect black waves-dark z-depth-0 btn-small disabled" href="/recipes/<%= recipe._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                    <form id="inline-form" action="/recipes/<%= recipe._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn white-text waves-effect black waves-dark z-depth-0 btn-small disabled">Delete</button>
+                    </form>
+                <% } %> 
             </div>  
 
         <% }); %>

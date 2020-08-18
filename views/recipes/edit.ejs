@@ -5,10 +5,10 @@
         <form action="/recipes/<%= recipe._id %>?_method=PUT"" class="col s12" method="POST">
             <div class="row">
 
-                <div class="input-field col s6">
-                    <input value="<%= recipe.author %>" id="author" type="text" class="validate" name="recipe[author]">
+                <!-- <div class="input-field col s6">
+                    <input value="<%= recipe.author.username %>" id="author" type="text" class="validate" name="recipe[author]">
                     <label for="author">Author Name</label>
-                </div>
+                </div> -->
 
                 <div class="input-field col s6">
                     <input value="<%= recipe.recipeName %>" id="recipe" type="text" class="validate" name="recipe[recipeName]">

@@ -74,7 +74,7 @@ app.use('/recipes', recipesRoute);
 app.use('/recipes/:id/comments', commentsRoute);
 app.use(authRoutes);
 
-// SEED DATABASE //
+// SEED DATABASE - Seeds need to be refactored to suit new model properties. Right now, it's only used for clearing the DB. //
 // seedDB(); 
 
 // INDEX
