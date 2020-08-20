@@ -34,4 +34,18 @@
             </div>
         </nav>
     </div>
+
+    <% if (success && success.length > 0) { %> 
+        <div id="flash-message-container-success">
+            <div id="flash-message-success" class="container">
+                <%= success %>
+            </div>
+        </div>
+    <% } else if (error && error.length > 0) { %>
+        <div id="flash-message-container-error">
+            <div id="flash-message-error" class="container">
+                <%= error %>
+            </div>
+        </div>
+    <% } %>
     

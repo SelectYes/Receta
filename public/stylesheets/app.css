@@ -131,3 +131,29 @@ h5.white-text {
     padding: 20px;
     margin: 10px 0;
 }
+
+#flash-message-container-success {
+    background-color: rgb(134, 240, 180);
+    width: 100%;
+    margin: 0;
+    height: 25px;
+}
+
+#flash-message-success {
+    color: seagreen;
+    height: 100%;
+    vertical-align: middle;
+}
+
+#flash-message-container-error {
+    background-color: rgb(255, 157, 157);
+    width: 100%;
+    margin: 0;
+    height: 25px;
+}
+
+#flash-message-error {
+    color: rgb(211, 45, 45);
+    height: 100%;
+    vertical-align: middle;
+}

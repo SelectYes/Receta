@@ -20,6 +20,7 @@ const expressSession            = require('express-session');
 // MISC
 const seedDB                    = require('./seeds');
 const port                      = 3000;
+const flash                     = require('connect-flash');
 // ROUTES
 const recipesRoute              = require('./routes/recipes');
 const commentsRoute             = require('./routes/comments');
@@ -41,6 +42,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(methodOverride('_method'));
+app.use(flash());
 
 /////////////////////////////////////////////////////////////////////////////
 //                           AUTHENTICATION CONFIG
@@ -63,6 +65,8 @@ passport.deserializeUser(User.deserializeUser());
 // MAKE CURRENT USER DATA AVAILABLE IN ALL TEMPLATES/ROUTES
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
+    res.locals.success = req.flash('success');
+    res.locals.error = req.flash('error');
     next();
 });
 

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const Recipe = require('../models/recipe');
+const middleware = require('../middleware/index');
 
 
 // PASSING LOGGED IN USER DATA TO TEMPLATES/ROUTES
@@ -10,34 +11,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// MIDDLEWARE CHEKCKING IF USER IS LOGGED IN
-const isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login');
-};
-
-//MIDDLEWARE CHECKING IF USER IS AUTHORIZED FOR ACTION
-const checkRecipeOwnership = async (req, res, next) => {
-    try {
-        if (req.isAuthenticated()) {
-            const recipe = await Recipe.findById(req.params.id);
-            if (recipe.author.id.equals(req.user._id)) {
-                next();
-            } else {
-                console.log('You are not permitted to do that.');
-                res.redirect("back");
-            }
-        } else {
-            console.log('You must be logged in to do that.');
-            res.redirect("back");
-        }
-    } catch (error) {
-        console.log(error);
-        res.redirect('back');
-    }
-}
 
 router.get('/', (req, res) => {
     Recipe.find({}, (err, retrievedRecipes) => {
@@ -50,12 +23,12 @@ router.get('/', (req, res) => {
 });
 
 // NEW
-router.get('/new', isLoggedIn, (req, res) => {
+router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('recipes/new');
 });
 
 // CREATE
-router.post('/', isLoggedIn, async (req, res) => {
+router.post('/', middleware.isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.create(req.body.recipe);
 
@@ -63,11 +36,11 @@ router.post('/', isLoggedIn, async (req, res) => {
         recipe.author.id = req.user._id;
         recipe.save();
 
+        req.flash('success', 'Recipe added!');
         res.redirect('/recipes')
         
     } catch (error) {
-        console.log(error);
-        console.log('COULD NOT CREATE NEW RECIPE!');
+        req.flash('error', error.message);
     }  
 });
 
@@ -83,7 +56,7 @@ router.get('/:id', (req, res) => {
 });
 
 // EDIT
-router.get('/:id/edit', checkRecipeOwnership, (req, res) => {
+router.get('/:id/edit', middleware.checkRecipeOwnership, (req, res) => {
     Recipe.findById(req.params.id, (err, recipe) => {
         if (err) {
             console.log('ERROR!');
@@ -94,22 +67,24 @@ router.get('/:id/edit', checkRecipeOwnership, (req, res) => {
 });
 
 // UPDATE
-router.put('/:id', checkRecipeOwnership, (req, res) => {
+router.put('/:id', middleware.checkRecipeOwnership, (req, res) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
         if (err) {
             console.log('ERROR!');
         } else {
+            req.flash('success', 'Recipe updated!');
             res.redirect(`/recipes/${req.params.id}`);
         }
     });
 });
 
 // DESTROY
-router.delete('/:id', checkRecipeOwnership, (req, res) => {
+router.delete('/:id', middleware.checkRecipeOwnership, (req, res) => {
     Recipe.findByIdAndDelete(req.params.id, (err, recipe) => {
         if (err) {
             console.log("ERROR!");
         } else {
+            req.flash('success', 'Recipe removed!');
             res.redirect('/recipes');
         }
     });
