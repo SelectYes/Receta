@@ -19,18 +19,20 @@ const passportLocalMongoose     = require('passport-local-mongoose')
 const expressSession            = require('express-session');
 // MISC
 const seedDB                    = require('./seeds');
-const port                      = 3000;
+const port                      = process.env.PORT || 3000;
 const flash                     = require('connect-flash');
 // ROUTES
 const recipesRoute              = require('./routes/recipes');
 const commentsRoute             = require('./routes/comments');
 const authRoutes                = require('./routes/authentication');
+// ENV VARIABLES
+require('dotenv').config();
 
 /////////////////////////////////////////////////////////////////////////////
 //                           SERVER / DB CONFIG
 /////////////////////////////////////////////////////////////////////////////
 
-mongoose.connect('mongodb://localhost:27017/recipedex', {
+mongoose.connect(process.env.DATABASEURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
@@ -87,4 +89,4 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(port, () => console.log(`Serving RecipeDex on localhost:${port}`))
+app.listen(port, () => console.log(`Serving RecipeDex on:${port}`))
