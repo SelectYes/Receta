@@ -1,0 +1,45 @@
+<%- include('../partials/header') %>
+
+<div class="container">
+    <p>
+        <span class="grey-text">Step 1: Recipe Description >></span> 
+        <span class="red-text text-darken-2"><strong>Step 2: Add Ingredients</strong></span><span class="grey-text"> 
+        <span class="grey-text">>> Step 3: Add instructions</span>
+    </p>
+    <h1>Add Ingredients</h1>
+    <p><%= recipe %></p>
+    <div class="row grey lighten-4 z-depth-0 section">
+        <form action="/recipes/<%= recipe._id %>>/ingredients" class="col s12" method="POST">
+           
+            <div class="row">
+                <div class="input-field col s4">
+                    <input placeholder="flour" id="ingredient" type="text" class="validate" name="ingredients[item]">
+                    <label for="ingredient">Ingredient</label>
+                </div>
+
+                <div class="input-field col s2">
+                    <input id="quantity" type="number" class="validate" name="ingredients[quantity]">
+                    <label for="quantity">Quantity</label>
+                </div>
+
+                <div class="input-field col s4">
+                    <input placeholder="ml" id="measuringUnit" type="text" class="validate" name="ingredients[measuringUnit]">
+                    <label for="measuringUnit">Measuring Unit</label>
+                </div>
+
+                <div class="col s2">
+                    <div id="add-ingredient-btn" class="btn-floating z-depth-0 grey darken-4 waves-effect waves-light">
+                        <i class="material-icons">add</i>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn z-depth-0 grey darken-4 waves-effect waves-light" type="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>

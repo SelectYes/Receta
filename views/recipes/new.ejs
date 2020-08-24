@@ -1,6 +1,11 @@
 <%- include('../partials/header') %>
 
 <div class="container">
+    <p>
+        <span class="red-text text-darken-2"><strong>Step 1: Recipe Description</strong></span> 
+        <span class="grey-text">>> Step 2: Add Ingredients >> Step 3: Add instructions</span>
+    </p>
+    
     <h1>Add a new Recipe</h1>
     <div class="row grey lighten-4 z-depth-0 section">
         <form action="/recipes" class="col s12" method="POST">
@@ -10,47 +15,28 @@
                     <input placeholder="Tuna Pasta" id="recipe" type="text" class="validate" name="recipe[recipeName]">
                     <label for="recipe">Recipe Name</label>
                 </div>
+
                 <div class="input-field col s6">
                     <input id="servings" type="number" class="validate" name="recipe[servings]">
                     <label for="servings">Servings</label>
                 </div>
+
                 <div class="input-field col s6">
                     <input id="prep-time" type="number" class="validate" name="recipe[prepTime]">
                     <label for="prep-time">Prep Time (minutes)</label>
                 </div>
 
-                <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
-                <!-- <div class="col s12">
-                    <h6>Ingredients</h6>
-                </div>
-
-                <div class="input-field col s4">
-                    <input id="item" type="text" class="validate" name="recipe[ingredients][item]">
-                    <label for="item">Item</label>
-                </div>
-                <div class="input-field col s4">
-                    <input id="quantity" type="number" class="validate" name="recipe[ingredients][quantity]">
-                    <label for="quantity">Quantity</label>
-                </div>
-                <div class="input-field col s4">
-                    <input id="measuringUnit" type="text" class="validate" name="recipe[ingredients][measuringUnit]">
-                    <label for="measuringUnit">Measuring Unit</label>
-                </div>
-                <div class="container col s12">
-                    <p class="btn z-depth-0 grey darken-4 waves-effect waves-light" >New Ingredient</p>
-                </div> -->
-
-                <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-
                 <div class="input-field col s12">
-                    <textarea id="textarea1" class="materialize-textarea" name="recipe[description]" required>This recipe will rock your culinary socks off!</textarea>
+                    <textarea id="textarea1" class="materialize-textarea" name="recipe[description]" required>Tell us about your recipe...</textarea>
                     <label for="textarea1">Recipe Description</label>
                 </div>
-                <div class="input-field col s6">
+
+                <div class="input-field col s12">
                     <input placeholder="Paste Image URL Here..." id="image" type="text" class="validate" name="recipe[imageURL]">
                     <label for="image">Image</label>
                 </div>
+
+                
             </div>
             <button class="btn z-depth-0 grey darken-4 waves-effect waves-light" type="submit">Submit
                 <i class="material-icons right">send</i>

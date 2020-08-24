@@ -157,3 +157,7 @@ h5.white-text {
     height: 100%;
     vertical-align: middle;
 }
+
+#ingredient-section-header {
+    padding-left: 10px;
+}

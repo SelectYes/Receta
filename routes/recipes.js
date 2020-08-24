@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const router = express.Router();
 const Recipe = require('../models/recipe');
+const Ingredient = require('../models/ingredient')
 const middleware = require('../middleware/index');
 
 
@@ -22,12 +23,12 @@ router.get('/', (req, res) => {
     });
 });
 
-// NEW
+// NEW - RECIPE DESCRIPTION
 router.get('/new', middleware.isLoggedIn, (req, res) => {
     res.render('recipes/new');
 });
 
-// CREATE
+// CREATE - RECIPE DESCRIPTION
 router.post('/', middleware.isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.create(req.body.recipe);
@@ -35,13 +36,38 @@ router.post('/', middleware.isLoggedIn, async (req, res) => {
         recipe.author.username = req.user.username;
         recipe.author.id = req.user._id;
         recipe.save();
+        console.log("from create recipe: " + recipe);
 
-        req.flash('success', 'Recipe added!');
-        res.redirect('/recipes')
+        // req.flash('success', 'Great! Now go ahead and add the necessary ingredients and instructions');
+        res.redirect(`/recipes/${recipe._id}/ingredients/new`);
         
     } catch (error) {
         req.flash('error', error.message);
     }  
+});
+
+// NEW - RECIPE INGREDIENTS
+router.get('/:id/ingredients/new', async (req, res) => {
+    try {
+        const recipe = Recipe.findById(req.params.id);
+        console.log("from ingredient form: " + recipe);
+        res.render('ingredients/new', {recipe: recipe});
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+});
+
+// CREATE - RECIPE INGREDIENTS
+router.post('/:id/ingredients', async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        const ingredientList = req.body.ingredients
+        console.log(recipe);
+        console.log(ingredientList);
+        res.redirect('/recipes');
+    } catch (error) {
+        req.flash('error', error.message);
+    }
 });
 
 // SHOW

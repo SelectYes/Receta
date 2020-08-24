@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 // const comment = require('./comment');
 
 // RECIPE SCHEMA
-const recipeScema = new mongoose.Schema({
+const recipeSchema = new mongoose.Schema({
     author: {
         id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -16,7 +16,12 @@ const recipeScema = new mongoose.Schema({
     created: {type: Date, default: Date.now},
     servings: Number,
     prepTime: Number,
-    ingredients: String,
+    ingredientList: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Ingredient'
+        }
+    ],
     instructions: String,
     comments: [
         {
@@ -27,4 +32,4 @@ const recipeScema = new mongoose.Schema({
 });
 
 // MODEL-EXPORT
-module.exports = mongoose.model('Recipe', recipeScema);
+module.exports = mongoose.model('Recipe', recipeSchema);
