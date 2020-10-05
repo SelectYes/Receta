@@ -36,9 +36,7 @@ router.post('/', middleware.isLoggedIn, async (req, res) => {
         recipe.author.username = req.user.username;
         recipe.author.id = req.user._id;
         recipe.save();
-        console.log("from create recipe: " + recipe);
 
-        // req.flash('success', 'Great! Now go ahead and add the necessary ingredients and instructions');
         res.redirect(`/recipes/${recipe._id}/ingredients/new`);
         
     } catch (error) {
@@ -47,10 +45,9 @@ router.post('/', middleware.isLoggedIn, async (req, res) => {
 });
 
 // NEW - RECIPE INGREDIENTS
-router.get('/:id/ingredients/new', async (req, res) => {
+router.get('/:id/ingredients/new', middleware.isLoggedIn, async (req, res) => {
     try {
-        const recipe = Recipe.findById(req.params.id);
-        console.log("from ingredient form: " + recipe);
+        const recipe = await Recipe.findById(req.params.id);
         res.render('ingredients/new', {recipe: recipe});
     } catch (error) {
         req.flash('error', error.message);
@@ -58,17 +55,49 @@ router.get('/:id/ingredients/new', async (req, res) => {
 });
 
 // CREATE - RECIPE INGREDIENTS
-router.post('/:id/ingredients', async (req, res) => {
+router.post('/:id/ingredients', middleware.isLoggedIn, async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id);
-        const ingredientList = req.body.ingredients
-        console.log(recipe);
-        console.log(ingredientList);
-        res.redirect('/recipes');
+        const ingredientArr = req.body.ingredients;
+
+        ingredientArr.forEach(element => {
+            recipe.ingredientList.push(element);
+            
+        });
+
+        recipe.save();
+
+        res.redirect(`/recipes/${recipe._id}/instructions/new`);
     } catch (error) {
         req.flash('error', error.message);
     }
 });
+
+// NEW - RECIPE INSTRUCTIONS
+router.get('/:id/instructions/new', middleware.isLoggedIn, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        res.render('instructions/new', {recipe: recipe});
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+
+});
+
+// CREATE - RECIPE INSTRUCTIONS
+router.post('/:id/instructions', middleware.isLoggedIn, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        const instructions = req.body.instructions;
+
+        recipe.instructions = instructions;
+        recipe.save();
+
+        res.redirect('/recipes');
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+})
 
 // SHOW
 router.get('/:id', (req, res) => {
@@ -81,27 +110,85 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// EDIT
-router.get('/:id/edit', middleware.checkRecipeOwnership, (req, res) => {
-    Recipe.findById(req.params.id, (err, recipe) => {
-        if (err) {
-            console.log('ERROR!');
-        } else {
-            res.render('recipes/edit', {recipe: recipe});
-        }
-    });
+// EDIT - RECIPE DESCRIPTION
+router.get('/:id/edit', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        res.render('recipes/edit', {recipe: recipe});
+    } catch (error) {
+        req.flash('error', error.message);
+    }
 });
 
-// UPDATE
-router.put('/:id', middleware.checkRecipeOwnership, (req, res) => {
-    Recipe.findByIdAndUpdate(req.params.id, req.body.recipe, (err, updateRecipe) => {
-        if (err) {
-            console.log('ERROR!');
-        } else {
-            req.flash('success', 'Recipe updated!');
-            res.redirect(`/recipes/${req.params.id}`);
-        }
-    });
+// UPDATE - RECIPE DESCRIPTION
+router.put('/:id', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        await Recipe.findByIdAndUpdate(req.params.id, req.body.recipe);
+        // req.flash('success', 'Recipe updated!');
+
+        // const recipe = await Recipe.findById(req.params.id);
+        // res.render('ingredients/edit', {recipe: recipe});
+        res.redirect(`/recipes/${req.params.id}/edit-ingredients`);
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+});
+
+// EDIT - RECIPE INGREDIENTS
+router.get('/:id/edit-ingredients', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        res.render('ingredients/edit', {recipe: recipe});
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+});
+
+// UPDATE - RECIPE INGREDIENTS
+router.put('/:id/update-ingredients', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        const ingredientArr = req.body.ingredients;
+        recipe.ingredientList = [];
+
+        ingredientArr.forEach(element => {
+            recipe.ingredientList.push(element);
+            
+        });
+
+        recipe.save();
+        // Recipe.findByIdAndUpdate(req.params.id, req.body.ingredients);
+        res.redirect(`/recipes/${req.params.id}/edit-instructions`);
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+});
+
+// EDIT - RECIPE INSTRUCTIONS
+router.get('/:id/edit-instructions', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        res.render('instructions/edit', {recipe: recipe});
+    } catch (error) {
+        req.flash('error', error.message);
+    }
+});
+
+// UPDATE - RECIPE INSTRUCTIONS
+router.put('/:id/update-instructions', middleware.checkRecipeOwnership, async (req, res) => {
+    try {
+        const recipe = await Recipe.findById(req.params.id);
+        const instructions = req.body.instructions;
+
+        recipe.instructions = instructions;
+        recipe.save();
+
+        
+        req.flash('success', 'Recipe updated!');
+        res.redirect(`/recipes/${req.params.id}`);
+    } catch (error) {
+        req.flash('error', error.message);
+    }
 });
 
 // DESTROY

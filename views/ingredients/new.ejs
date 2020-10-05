@@ -1,36 +1,43 @@
 <%- include('../partials/header') %>
 
-<div class="container">
+<div class="container height-control">
     <p>
         <span class="grey-text">Step 1: Recipe Description >></span> 
-        <span class="red-text text-darken-2"><strong>Step 2: Add Ingredients</strong></span><span class="grey-text"> 
-        <span class="grey-text">>> Step 3: Add instructions</span>
+        <span class="red-text text-darken-2"><strong>Step 2: Recipe Ingredients</strong></span>
+        <span class="grey-text">>> Step 3: Recipe instructions</span>
     </p>
     <h1>Add Ingredients</h1>
-    <p><%= recipe %></p>
+    
     <div class="row grey lighten-4 z-depth-0 section">
-        <form action="/recipes/<%= recipe._id %>>/ingredients" class="col s12" method="POST">
-           
-            <div class="row">
-                <div class="input-field col s4">
-                    <input placeholder="flour" id="ingredient" type="text" class="validate" name="ingredients[item]">
-                    <label for="ingredient">Ingredient</label>
-                </div>
-
-                <div class="input-field col s2">
-                    <input id="quantity" type="number" class="validate" name="ingredients[quantity]">
-                    <label for="quantity">Quantity</label>
-                </div>
-
-                <div class="input-field col s4">
-                    <input placeholder="ml" id="measuringUnit" type="text" class="validate" name="ingredients[measuringUnit]">
-                    <label for="measuringUnit">Measuring Unit</label>
-                </div>
-
-                <div class="col s2">
-                    <div id="add-ingredient-btn" class="btn-floating z-depth-0 grey darken-4 waves-effect waves-light">
-                        <i class="material-icons">add</i>
+        <form id="ingredient-form" action="/recipes/<%= recipe._id %>/ingredients" class="col s12" method="POST">
+            <div id="inputs-container">
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="ingredient" type="text" class="validate" name="ingredients[1][item]">
+                        <label for="ingredient">Ingredient</label>
                     </div>
+
+                    <div class="input-field col s2">
+                        <input id="quantity" type="number" class="validate" name="ingredients[1][quantity]">
+                        <label for="quantity">Quantity</label>
+                    </div>
+
+                    <div class="input-field col s4">
+                        <input id="measuringUnit" type="text" class="validate" name="ingredients[1][measuringUnit]">
+                        <label for="measuringUnit">Measuring Unit</label>
+                    </div>
+
+                    <div class="col s2">
+                        <div class="btn z-depth-0 grey darken-4 waves-effect waves-light remove-ingredient-btn">
+                            <!-- <i class="material-icons">add</i> -->Remove
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s2">
+                <div id="add-ingredient-btn" class="btn z-depth-0 grey darken-4 waves-effect waves-light">Add
+                    <i class="material-icons right">add</i>
                 </div>
             </div>
 
@@ -38,8 +45,57 @@
                 <i class="material-icons right">send</i>
             </button>
         </form>
+        <script>
+            function addButtonEvents() {
+                const removeBtn = document.querySelectorAll('.remove-ingredient-btn');
+
+                removeBtn.forEach(el => {
+                    el.addEventListener('click', () => {
+                        el.parentNode.parentNode.remove();
+                    })
+                })
+            };
+
+            const add_btn = document.getElementById('add-ingredient-btn');
+            const container = document.getElementById('inputs-container');
+            const rows = document.querySelectorAll('.row');
+            addButtonEvents();
+            let counter = 1
+            
+            add_btn.addEventListener("click", () => {
+
+                counter += 1;
+                let newElem = `<div class="row">
+                <div class="input-field col s4">
+                    <input id="ingredient" type="text" class="validate" name="ingredients[${counter}][item]">
+                    <label for="ingredient">Ingredient</label>
+                </div>
+
+                <div class="input-field col s2">
+                    <input id="quantity" type="number" class="validate" name="ingredients[${counter}][quantity]">
+                    <label for="quantity">Quantity</label>
+                </div>
+
+                <div class="input-field col s4">
+                    <input id="measuringUnit" type="text" class="validate" name="ingredients[${counter}][measuringUnit]">
+                    <label for="measuringUnit">Measuring Unit</label>
+                </div>
+
+                <div class="col s2">
+                    <div class="btn z-depth-0 grey darken-4 waves-effect waves-light remove-ingredient-btn">
+                        <!-- <i class="material-icons">add</i> -->Remove
+                    </div>
+                </div>
+
+            </div>`;
+
+                container.insertAdjacentHTML('beforeend', newElem);
+                addButtonEvents();
+            });
+        </script>
     </div>
 </div>
 
 
 <%- include('../partials/footer') %>
+

@@ -1,3 +1,8 @@
+body { 
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
 h1 {
     margin-top: 0;
 }
@@ -160,4 +165,34 @@ h5.white-text {
 
 #ingredient-section-header {
     padding-left: 10px;
+}
+
+.ingredient-list-item-container {
+    display: flex;
+    border-bottom: 2px solid #eeeeee;
+}
+
+.ingredient-list-item-container:nth-child(2n) {
+    /* background-color: #e0e0e0 ; */
+}
+
+.ingredient-list-item__item {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.ingredient-list-item_quantity {
+    width: 20%;
+    margin: 0 auto;
+    text-align: right;
+}
+
+.ingredient-list-item__measuring-unit {
+    width: 20%;
+    margin: 0 auto;
+    text-align: right;
+}
+
+.height-control {
+    min-height: 100vh;
 }

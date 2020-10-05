@@ -5,10 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Receta.com</title>
-
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script> -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
+
+
 </head>
 
 <body>
@@ -16,24 +24,32 @@
         <nav class='z-depth-0'>
             <div class="nav-wrapper red darken-2">
                 <div class="container">
-                    <a href="/recipes" class="brand-logo"><i class="material-icons">restaurant</i>Receta.com</a>
-                    <div class="">
-                        <ul class="right">
-                            <!-- <li><a href="/recipes">Home</a></li> -->
-                            <% if (!currentUser) { %>
-                                <li><a href="/register">Sign Up</a></li>
-                                <li><a href="/login">Login</a></li>
-                            <% } else { %>
-                                <li><a href="#">Hello, <%= currentUser.username %>!</a></li>
-                                <li><a href="/recipes/new">Add Recipe</a></li>
-                                <li><a href="/logout">Logout</a></li>
-                            <% } %>
-                        </ul>
-                    </div>
+                    <a href="/recipes" class="brand-logo "><i class="material-icons">restaurant</i>Receta.com</a>
+                    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                    <ul class="right hide-on-med-and-down">
+                        <% if (!currentUser) { %>
+                            <li><a href="/register">Sign Up</a></li>
+                            <li><a href="/login">Login</a></li>
+                        <% } else { %>
+                            <li><a href="#">Hello, <%= currentUser.username %>!</a></li>
+                            <li><a href="/recipes/new">Add Recipe</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        <% } %>
+                    </ul>
                 </div>
             </div>
         </nav>
     </div>
+    <ul class="sidenav" id="mobile-demo">
+        <% if (!currentUser) { %>
+            <li><a href="/register">Sign Up</a></li>
+            <li><a href="/login">Login</a></li>
+        <% } else { %>
+            <!-- <li><a href="#">Hello, <%= currentUser.username %>!</a></li> -->
+            <li><a href="/recipes/new">Add Recipe</a></li>
+            <li><a href="/logout">Logout</a></li>
+        <% } %>
+    </ul>
 
     <% if (success && success.length > 0) { %> 
         <div id="flash-message-container-success">

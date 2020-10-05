@@ -16,12 +16,7 @@ const recipeSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now},
     servings: Number,
     prepTime: Number,
-    ingredientList: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ingredient'
-        }
-    ],
+    ingredientList: [],
     instructions: String,
     comments: [
         {

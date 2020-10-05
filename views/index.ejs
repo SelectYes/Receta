@@ -1,10 +1,11 @@
-<%- include('partials/header') %>
 
+
+<%- include('partials/header') %>
 <div id="home-header">
     <div class="container">
         <h2>Welcome!</h2>
         <h3>Have a look around. Try some recipes.</h2>
-        <h3>Leave a rating and don't forget to post your own!</h2>
+        <h3>Oh, and don't forget to post your own!</h2>
     </div>
 </div>
 <div id="index-header-container" class="container section">
@@ -39,4 +40,14 @@
     <% }) %>
 </div>
 
-<%- include('partials/footer') %>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.sidenav');
+      M.Sidenav.init(elems, options);
+    });
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <%- include('partials/footer') %>
+

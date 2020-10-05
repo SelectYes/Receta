@@ -1,14 +1,14 @@
 <%- include('../partials/header') %>
-<div class="container">
+<div class="container height-control">
+    <p>
+        <span class="red-text text-darken-2"><strong>Step 1: Recipe Description</strong></span> 
+        <span class="grey-text">>> Step 2: Recipe Ingredients >> Step 3: Recipe instructions</span>
+    </p>
+
     <h1>Edit Recipe</h1>
     <div class="row grey lighten-4 z-depth-0 section">
-        <form action="/recipes/<%= recipe._id %>?_method=PUT"" class="col s12" method="POST">
+        <form action="/recipes/<%= recipe._id %>?_method=PUT" class="col s12" method="POST">
             <div class="row">
-
-                <!-- <div class="input-field col s6">
-                    <input value="<%= recipe.author.username %>" id="author" type="text" class="validate" name="recipe[author]">
-                    <label for="author">Author Name</label>
-                </div> -->
 
                 <div class="input-field col s6">
                     <input value="<%= recipe.recipeName %>" id="recipe" type="text" class="validate" name="recipe[recipeName]">

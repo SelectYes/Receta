@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+<div class="container height-control">
+    <p>
+        <span class="grey-text">Step 1: Recipe Description >> Step 2: Recipe Ingredients >></span>
+        <span class="red-text text-darken-2"><strong>Step 3: Recipe instructions</strong></span> 
+    </p>
+    
+    <h1>Add Recipe Instructions</h1>
+    <div class="row grey lighten-4 z-depth-0 section">
+        <form action="/recipes/<%= recipe._id %>/instructions" class="col s12" method="POST">
+
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea id="textarea1" class="materialize-textarea" name="instructions" required>Tell us how to put it all together...</textarea>
+                    <label for="textarea1">Recipe Instructions</label>
+                </div>
+            </div>
+
+            <button class="btn z-depth-0 grey darken-4 waves-effect waves-light" type="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+
+        </form>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,109 @@
+<%- include('../partials/header') %>
+
+<div class="container height-control">
+    <p>
+        <span class="grey-text">Step 1: Recipe Description >></span> 
+        <span class="red-text text-darken-2"><strong>Step 2: Recipe Ingredients</strong></span>
+        <span class="grey-text">>> Step 3: Recipe instructions</span>
+    </p>
+    <h1>Edit Ingredients</h1>
+    
+    <div class="row grey lighten-4 z-depth-0 section">
+        <form id="ingredient-form" action="/recipes/<%= recipe._id %>/update-ingredients?_method=PUT" class="col s12" method="POST">
+            <div id="inputs-container">
+                <% counter = 1; %> 
+                <% recipe.ingredientList.forEach(element => { %>
+
+                    <div class="row">
+                        <div class="input-field col s4">
+                            <input id="ingredient" type="text" class="validate" name="ingredients[<%= counter %>][item]" value="<%= element.item %> ">
+                            <!-- <label for="ingredient">Ingredient</label> -->
+                        </div>
+        
+                        <div class="input-field col s2">
+                            <input id="quantity" type="number" class="v"alidate" name="ingredients[<%= counter %>][quantity]" value="<%= element.quantity %>">
+                            <!-- <label for="quantity">Quantity</label> -->
+                        </div>
+        
+                        <div class="input-field col s4">
+                            <input id="measuringUnit" type="text" class="validate" name="ingredients[<%= counter %>][measuringUnit]" value="<%= element.measuringUnit %>">
+                            <!-- <label for="measuringUnit">Measuring Unit</label> -->
+                        </div>
+        
+                        <div class="col s2">
+                            <div class="btn z-depth-0 grey darken-4 waves-effect waves-light remove-ingredient-btn">
+                                <!-- <i class="material-icons">add</i> -->Remove
+                            </div>
+                        </div>
+                    </div>
+                    <% counter += 1  %> 
+                <% }); %>
+            </div>
+
+            <div class="col s2">
+                <div id="add-ingredient-btn" class="btn z-depth-0 grey darken-4 waves-effect waves-light">Add
+                    <i class="material-icons right">add</i>
+                </div>
+            </div>
+
+            <button class="btn z-depth-0 grey darken-4 waves-effect waves-light" type="submit">Submit
+                <i class="material-icons right">send</i>
+            </button>
+
+        </form>
+
+        <script>
+            function addButtonEvents() {
+                const removeBtn = document.querySelectorAll('.remove-ingredient-btn');
+
+                removeBtn.forEach(el => {
+                    el.addEventListener('click', () => {
+                        el.parentNode.parentNode.remove();
+                    })
+                })
+            };
+
+
+            const add_btn = document.getElementById('add-ingredient-btn');
+            const container = document.getElementById('inputs-container');
+            const rows = document.querySelectorAll('.row');
+            addButtonEvents();
+            let counter = rows.length;
+            
+            
+            add_btn.addEventListener("click", () => {
+                
+                let newElem = `
+                <div class="row">
+                    <div class="input-field col s4">
+                        <input id="ingredient" type="text" class="validate" name="ingredients[${counter}][item]">
+                        <label for="ingredient">Ingredient</label>
+                    </div>
+
+                    <div class="input-field col s2">
+                        <input id="quantity" type="number" class="validate" name="ingredients[${counter}][quantity]">
+                        <label for="quantity">Quantity</label>
+                    </div>
+
+                    <div class="input-field col s4">
+                        <input id="measuringUnit" type="text" class="validate" name="ingredients[${counter}][measuringUnit]">
+                        <label for="measuringUnit">Measuring Unit</label>
+                    </div>
+
+                    <div class="col s2">
+                        <div class="btn z-depth-0 grey darken-4 waves-effect waves-light remove-ingredient-btn">
+                            <!-- <i class="material-icons">add</i> -->Remove
+                        </div>
+                    </div>
+                </div>`;
+
+                container.insertAdjacentHTML('beforeend', newElem);
+                counter += 1;
+                addButtonEvents();
+            });
+        </script>
+    </div>
+</div>
+
+
+<%- include('../partials/footer') %>
