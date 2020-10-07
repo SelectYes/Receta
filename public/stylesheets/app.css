@@ -22,6 +22,10 @@ h1 {
     margin: 20px auto
 }
 
+#comments-section {
+    margin: 20px auto
+}
+
 .jumbo {
     display: flex;
     width: 100%;
@@ -104,8 +108,16 @@ h5.white-text {
     margin: 0;
 }
 
+#section-2__mobile {
+    display: none;
+}
+
 .column-entry {
     text-align: left;
+}
+
+.section-heading {
+    margin-top: 20px;
 }
 
 #comments-banner {
@@ -195,4 +207,35 @@ h5.white-text {
 
 .height-control {
     min-height: 100vh;
+}
+
+@media all and (max-width: 670px) {
+    #section-2 {
+        display: none;
+    }
+
+    #section-2__mobile {
+        display: block;
+    }
+
+    .header-image {
+        max-height: 200px;
+    }
+
+    #jumbo-content {
+        height: 100vh;
+        /* margin-top: 100px; */
+    }
+
+    .jumbo {
+        height: 100vh;
+    }
+
+    #logo-icon {
+        display: none;
+    }
+
+    #home-header {
+        background-position: top right;
+    }
 }
